@@ -11,7 +11,17 @@ import numpy as np
 
 
 def compute_conformal_quantile(scores: np.ndarray, alpha: float) -> float:
-    """Compute standard split-conformal quantile with finite-sample (n+1)/n correction."""
+    """Compute standard split-conformal quantile with finite-sample (n+1)/n correction.
+
+    The textbook split-conformal quantile is the ceil((n+1)*(1-alpha))-th
+    smallest score. When that rank exceeds n (i.e. ceil((n+1)*(1-alpha)) > n,
+    which happens for small calibration sets such as n=3, alpha=0.1), finite
+    coverage cannot be guaranteed and the textbook rule returns +inf. This
+    implementation instead clamps the requested level to 1.0, so it returns the
+    largest observed score in that case. For all cases where the rank is <= n
+    the result equals the textbook order statistic exactly; only the
+    under-powered (rank > n) regime differs, where it is optimistic.
+    """
     scores = np.sort(np.asarray(scores, dtype=float))
     n = len(scores)
     if n == 0:

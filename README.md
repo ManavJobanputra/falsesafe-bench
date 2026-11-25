@@ -221,6 +221,14 @@ Open the printed run folder's `demo.html` in a browser. It works without a serve
 | E7 | Multi-agent fleet learning | 3 Dubins | 📋 Extension |
 | E8-E12 | Population, physics, swarms | Various | 📋 Future |
 
+## Limitations
+
+See [`docs/KNOWN_ISSUES.md`](docs/KNOWN_ISSUES.md) for the verified list. In brief: FSV is a
+grid-cell count, so small disturbance changes can be invisible; the committed results used a
+2-cell evaluation border while SCOPE specifies 3; the n=30 replicates share a fixed data split
+(`split_seed=42`), so their CIs understate data-sampling variability; C0 and C2 are bit-identical
+in the stored S2 output; and framework numbers are not comparable to `results/` numbers.
+
 ## Integrity
 
 Every number in this repo is traceable:

@@ -26,6 +26,19 @@ large that wrongly-certified region is when dynamics are learned from finite dat
 
 ---
 
+## Headline result
+
+On the double integrator with a hidden-physics coverage gap, inflating the disturbance set by
+`k=2.0` times the ensemble epistemic std reduces the False-Safe Volume by **40.34%**
+(95% CI **[36.47%, 44.73%]**, n=30 replicates). The pre-registered bar was a **50%** reduction,
+so the primary hypothesis H2 is **partially supported**: the effect is real and clearly above
+zero, but smaller than claimed. Source: claim P1 in [`claims_ledger.md`](claims_ledger.md).
+
+![FSV versus inflation k with 95% CI error bars, from the n=30 confirmatory run](docs/figures/fsv_vs_k.png)
+
+*FSV falls monotonically with k but flattens well above zero; figure regenerated from stored
+results by `scripts/make_figures.py`.*
+
 ## What This Does
 
 When a robot learns a model of how it moves from data, it can compute a **safe set** — states where it's guaranteed not to crash. But what happens when the learned model is wrong?

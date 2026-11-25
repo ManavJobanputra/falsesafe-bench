@@ -22,3 +22,13 @@ vs C2 rows are an example: their `fuv_star_curve` is constant across the whole
 control-ratio grid. Report FSV differences with this granularity in mind, and do
 not read a zero change as proof that the underlying safety set did not move.
 
+## 3. Legacy results used a 2-cell border, SCOPE specifies 3
+
+The committed sweeps under `results/sweeps/` evaluated internal cells with a
+2-cell border excluded, while `SCOPE.md` section 3 specifies a 3-cell border
+(and `src/lcert/metrics.py` defaults to 3). The stored `num_eval_cells` of 38809
+in the n=30 run equals `(201-4)^2`, confirming the 2-cell border was used. The
+two configs that reproduce legacy runs now pin `border_cells: 2` explicitly with
+a `legacy` comment; all other runs default to 3. Numbers computed under the
+2-cell border are therefore not directly comparable to a 3-cell-border re-run.
+

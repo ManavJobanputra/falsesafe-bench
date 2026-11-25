@@ -136,7 +136,7 @@ falsesafe-bench/
 ├── scripts/                # Entry points & utilities
 ├── tests/                  # Sanity tests (protected)
 ├── demos/                  # Browser-based replay viewer
-└── results/                # Logged runs with full provenance
+└── results/                # Frozen legacy baseline (see results/README.md)
 ```
 
 ## Tech Stack

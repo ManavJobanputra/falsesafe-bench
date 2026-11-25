@@ -97,6 +97,22 @@ The **false-safe volume** is the most dangerous error in safety-critical systems
 
 *Midpoint screenshot of the seeded fleet diagnostic, including its recorded failure. This is not a successful-learning or safety result.*
 
+## Repo map
+
+| Path | What it holds |
+|---|---|
+| `src/lcert/metrics.py` | Protected FSV / FUV / IoU / Gap-FSV and bootstrap CIs |
+| `src/lcert/hj_di.py`, `hj_learned.py` | True and learned-model HJ reachability (double integrator) |
+| `src/lcert/certifiers/` | Conformal (C0/C1a/C1b/C2) and distance-aware (L) certifiers |
+| `src/lcert/models/` | MLP ensembles and Gaussian-process dynamics models |
+| `src/lcert/framework/` | Exploratory plug-in harness (env/hazard/policy/certifier) |
+| `scripts/` | Entry points: `run_experiment.py`, `run_pipeline.py`, `validate_runlogs.py`, `make_figures.py` |
+| `configs/` | Experiment configs; the two legacy configs pin `border_cells: 2` |
+| `tests/` | Protected pytest suite (100 passed, 2 skipped) |
+| `results/` | Frozen legacy baseline (see `results/README.md`) |
+| `docs/` | Report, framework docs, known issues, figures |
+| `SCOPE.md`, `claims_ledger.md` | Binding integrity contract and every reportable number |
+
 ## Architecture
 
 ```

@@ -32,3 +32,13 @@ two configs that reproduce legacy runs now pin `border_cells: 2` explicitly with
 a `legacy` comment; all other runs default to 3. Numbers computed under the
 2-cell border are therefore not directly comparable to a 3-cell-border re-run.
 
+## 4. Framework numbers and results/ numbers are not comparable
+
+The `src/lcert/framework/` plugin path and the preregistered `results/` pipeline
+are separate evaluation stacks. `configs/framework/di_nominal_sweep.yaml` uses
+`grid_size: 101`, `horizon: 1.5` and a constant `sigma: 0.15` nominal certifier,
+whereas the P1 run uses `grid_size: 201`, `horizon: 0.5`, a learned ensemble and
+per-state epistemic inflation. `docs/FRAMEWORK.md` already states that framework
+runs are exploratory and must not be quoted as confirmatory results. Never mix
+FSV/FUV numbers across the two stacks.
+

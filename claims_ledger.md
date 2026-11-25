@@ -23,4 +23,28 @@ Every number used outside this repo must have a row here. See SCOPE.md section 1
 | C4 | Benign drag control (-gamma * v * |v| * 1_G) geometry check | Nominal FSV = 0.000000, FUV = 0.006870 (Gap-FSV = 0.000000); true safe set expands from 0.6970 to 0.7048; confirms prediction: FUV rises, FSV does not | 20261028_controls | 1c3236b | 2026-10-28 | run_controls_c1_c4 | passed (control) |
 | C5 | Grid convergence across N in {51, 101, 201} on hidden physics gap | Relative difference |FSV_101 - FSV_201| / FSV_201 = 0.48% (passes <=25% tolerance) | 20261028_grid | 1c3236b | 2026-10-28 | check_grid_convergence | passed (control) |
 
+## Corrections
+
+Discrepancies between the control rows above and the committed artifact
+`results/controls_c1_c4_summary.json` (values below are copied from that file
+only; the JSON is the stored output of `scripts/run_controls_c1_c4.py` at the
+time the controls were run). These rows are left as-is to preserve the frozen
+legacy baseline, but should not be cited as reported values.
+
+- **C3 status.** The row above says "passed (control)". The stored JSON records
+  `C3_corrupted.fsv = 0.002235371466140697` with `status = "FAILED"`. The pass
+  criterion in `scripts/run_controls_c1_c4.py:101` is `fsv > 0.15`, so the
+  stored value fails that criterion; the ledger's "passed" is wrong.
+- **C4 values.** The row above says `FSV = 0.000000`, `FUV = 0.006870`,
+  `Gap-FSV = 0.000000`. The stored JSON records `fsv = 0.0019986850756081526`,
+  `fuv = 0.0`, `gap_fsv = 0.005128205128205128` with `status = "PASSED"`. The
+  FSV, FUV and Gap-FSV numbers all disagree with the ledger row.
+- **C4 "expansion" numbers.** The row above also states "true safe set expands
+  from 0.6970 to 0.7048". Those two numbers do not appear anywhere in
+  `results/controls_c1_c4_summary.json`, so their provenance is not available.
+- **C2 status label.** The row above says "reported (control)". The stored JSON
+  records `C2_no_gap.fsv = 0.0039447731755424065`,
+  `fuv = 0.002577251808021039` (matching the row) but `status = "FLAGGED"`,
+  because `fsv < 0.002` in `scripts/run_controls_c1_c4.py:85` is not satisfied.
+
 

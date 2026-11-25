@@ -53,3 +53,22 @@ the rest) is missing in 40/40. The legacy runlogs therefore cannot prove which
 commit, config, or library versions produced them, and are treated as a frozen
 legacy baseline rather than a reproducible provenance record.
 
+## 6. Learned-HJ evaluator assumes a 2-hidden-layer ensemble
+
+`LearnedDoubleIntegratorDynamics._eval_member` in `src/lcert/hj_learned.py`
+hardcodes a forward pass over exactly two hidden layers (`w[0]`, `w[1]`,
+`w[2]`). Any ensemble trained with a different depth would have failed with an
+opaque `IndexError` inside the JAX trace; the constructor now raises a clear
+`ValueError` stating how many linear layers it received. This is a real
+limitation of the learned-HJ path, not of the ensemble trainer, which supports
+arbitrary depth.
+
+## 7. run_pipeline output location
+
+`run_pipeline` historically wrote every sweep into a new timestamped directory
+under `results/sweeps/`, with no way to redirect it, which made throwaway runs
+awkward to keep out of the repo. A `--output-dir` option (and matching
+`output_dir=` argument) now overrides that default; when omitted, behaviour is
+unchanged. The default path is still `results/sweeps/<UTC timestamp>`, so runs
+without the flag continue to land inside the frozen baseline tree.
+

@@ -171,7 +171,7 @@ falsesafe-bench/
 ### Pinned Dependencies & Runtime Stability
 - **Python:** 3.13 tested and verified.
 - **Computation:** JAX `0.12.0.1`, `hj_reachability 0.7.0`, PyTorch `2.14.1`, GPyTorch `1.15.2`, NumPy `2.5.4`, SciPy `1.18.1`.
-- **Integrity:** Zero unverified claims; all reported numbers traced to reproducible seeds and commit hashes.
+- **Integrity:** Numbers trace to the committed legacy runlogs, which record seeds but not git commits or config hashes (see results/README.md).
 
 ---
 

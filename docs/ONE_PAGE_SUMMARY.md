@@ -53,5 +53,8 @@ bar. The auxiliary break-even ratio is `r* = 0.4532`.
   added a Corrections section to the ledger for the C2/C3/C4 control rows.
 - Added a read-only runlog validator, `docs/KNOWN_ISSUES.md`, a changelog,
   citations, a roadmap, and a figure regenerated from stored results.
+- Proved `split_seed` alone determines the data split, made the learned-HJ
+  evaluator reject ensembles that are not two hidden layers, and added an
+  `--output-dir` option so sweeps can be written outside `results/`.
 
 See [`../CHANGELOG.md`](../CHANGELOG.md) for the commit-level list.

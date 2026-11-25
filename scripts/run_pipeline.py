@@ -170,6 +170,44 @@ def run_single_condition(
     return metrics_by_k
 
 
+def aggregate_p1(
+    fsv_k0: list[float],
+    fsv_k2: list[float],
+    fuv_k0: list[float],
+    fuv_k2: list[float],
+    confidence: float = 0.95,
+    seed: int = 20261027,
+) -> dict:
+    """Aggregate the pre-registered P1 estimand from matched per-seed arrays.
+
+    Returns a JSON-serializable dict with the reduction bootstrap, asymmetric
+    safety costs at k=0 and k=2, delta FSV/FUV, break-even ratio, and decision.
+    """
+    red = compute_paired_bootstrap_reduction(
+        fsv_k0, fsv_k2, confidence=confidence, num_resamples=10000, seed=seed
+    )
+    cost_k0 = float(np.mean(compute_asymmetric_safety_cost(fsv_k0, fuv_k0)))
+    cost_k2 = float(np.mean(compute_asymmetric_safety_cost(fsv_k2, fuv_k2)))
+    delta_fsv = float(np.mean(fsv_k0) - np.mean(fsv_k2))
+    delta_fuv = float(np.mean(fuv_k2) - np.mean(fuv_k0))
+    r_star = float(delta_fuv / delta_fsv) if delta_fsv > 1e-7 else None
+    cost = {
+        "cost_k0": cost_k0,
+        "cost_k2": cost_k2,
+        "delta_fsv_mean": delta_fsv,
+        "delta_fuv_mean": delta_fuv,
+        "break_even_ratio_r_star": round(r_star, 4) if r_star is not None else None,
+    }
+    r_est = red.mean_reduction_pct
+    ci_lo = red.ci_reduction_pct[0]
+    decision = (
+        "SUPPORTED"
+        if r_est >= 50.0 and ci_lo > 0
+        else ("PARTIALLY SUPPORTED" if ci_lo > 0 else "NOT SUPPORTED")
+    )
+    return {"reduction": red.to_dict(), "cost": cost, "decision": decision}
+
+
 def run_pipeline(config_path: Path, max_sizes: int | None = None) -> dict:
     """Execute full sweep defined in config_path and print aggregated research findings."""
     config = load_config(config_path)
@@ -281,45 +319,24 @@ def run_pipeline(config_path: Path, max_sizes: int | None = None) -> dict:
                 fsv_k2 = [m.fsv for m in run_metrics_by_k[2.0]]
                 fuv_k0 = [m.fuv for m in run_metrics_by_k[0.0]]
                 fuv_k2 = [m.fuv for m in run_metrics_by_k[2.0]]
-                red = compute_paired_bootstrap_reduction(
-                    fsv_k0, fsv_k2, confidence=0.95, n_resamples=10000, seed=20261027
-                )
-                cost_k0 = float(np.mean(compute_asymmetric_safety_cost(fsv_k0, fuv_k0)))
-                cost_k2 = float(np.mean(compute_asymmetric_safety_cost(fsv_k2, fuv_k2)))
-                delta_fsv = float(np.mean(fsv_k0) - np.mean(fsv_k2))
-                delta_fuv = float(np.mean(fuv_k2) - np.mean(fuv_k0))
-                r_star = float(delta_fuv / delta_fsv) if delta_fsv > 1e-7 else None
-                cost_res = {
-                    "cost_k0": cost_k0,
-                    "cost_k2": cost_k2,
-                    "delta_fsv_mean": delta_fsv,
-                    "delta_fuv_mean": delta_fuv,
-                    "break_even_ratio_r_star": round(r_star, 4) if r_star is not None else None,
-                }
-                r_est = red.mean_reduction_pct
-                ci_lo = red.ci_reduction_pct[0]
-                ci_hi = red.ci_reduction_pct[1]
+                p1 = aggregate_p1(fsv_k0, fsv_k2, fuv_k0, fuv_k2, confidence=0.95, seed=20261027)
+                red = p1["reduction"]
+                cost_res = p1["cost"]
+                decision = p1["decision"]
+                r_est = red["mean_reduction_pct"]
+                ci_lo = red["ci_reduction_pct"][0]
 
-                decision = (
-                    "SUPPORTED"
-                    if r_est >= 50.0 and ci_lo > 0
-                    else ("PARTIALLY SUPPORTED" if ci_lo > 0 else "NOT SUPPORTED")
-                )
                 print("\n" + "-" * 70)
                 print(f"--- PRIMARY P1 CONFIRMATORY EVALUATION (N={num_traj}, n={len(seeds)} seeds) ---")
                 print(f"Nominal FSV (k=0.0): mean = {np.mean(fsv_k0):.4f}")
                 print(f"Inflated FSV (k=2.0): mean = {np.mean(fsv_k2):.4f}")
-                print(f"Ratio-of-Means FSV Reduction R: {r_est:.2f}% (95% BCa CI: [{ci_lo:.2f}%, {ci_hi:.2f}%])")
+                print(f"Ratio-of-Means FSV Reduction R: {r_est:.2f}% (95% BCa CI: [{ci_lo:.2f}%, {red['ci_reduction_pct'][1]:.2f}%])")
                 print(f"Delta FUV (FUV_k2 - FUV_k0): {cost_res['delta_fuv_mean']:+.4f}")
                 print(f"Break-even safety cost ratio r*: {cost_res['break_even_ratio_r_star']}")
                 print(f"Pre-registered P1 Decision: {decision}")
                 print("-" * 70 + "\n", flush=True)
 
-                record["p1_primary_evaluation"] = {
-                    "reduction": red,
-                    "cost": cost_res,
-                    "decision": decision,
-                }
+                record["p1_primary_evaluation"] = p1
 
             summary_records.append(record)
 

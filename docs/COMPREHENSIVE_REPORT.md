@@ -3,6 +3,14 @@
 
 ---
 
+> **SUPERSEDED:** This report contains stale n=5 pilot numbers (e.g. the 72.7%
+> reduction below), which were later superseded by the n=30 confirmatory run.
+> The canonical P1 result lives in [`claims_ledger.md`](../claims_ledger.md):
+> 40.34% [36.47%, 44.73%], n=30, below the 50% bar -> *partially supported*.
+> Treat every figure in this file as historical context only.
+
+---
+
 ## Executive Summary
 
 Autonomous robots deployed in unstructured environments increasingly rely on learned dynamics models (e.g., deep neural networks, Gaussian processes) to forecast trajectories and optimize control actions. However, learning algorithms suffer from a fatal flaw: **the False-Safe illusion**. In state-space regions lacking training data (coverage gaps), models hallucinate safety where catastrophic failure lurks, certifying trajectories that physically crash.

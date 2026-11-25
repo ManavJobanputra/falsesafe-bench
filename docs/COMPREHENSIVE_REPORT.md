@@ -30,7 +30,7 @@ graph TD
 ```
 
 ### Key Milestones & Empirical Verification
-- **Verified Empirical Claims:** Multi-seed evaluation ($n=5$) confirms that nominal learned models produce a mean False-Safe Volume of **$0.0030$** (Claim C1). Disturbance inflation with multiplier $k=2.0$ cuts False-Safe Volume by **$72.7\%$** (Claim C2), passing the target benchmark threshold of $\ge 50\%$.
+- **Verified Empirical Claims:** Multi-seed evaluation ($n=5$) confirms that nominal learned models produce a mean False-Safe Volume of **$0.0030$** (Claim C1). Disturbance inflation with multiplier $k=2.0$ cuts False-Safe Volume by **$40.34\%$ $[36.47\%, 44.73\%]$** over the confirmatory $n=30$ run (Claim P1), below the $\ge 50\%$ target, so H2 is *partially supported*.
 - **Mission Control Studio v3.0:** Interactive browser cockpit featuring 7 diverse multi-task environments, 2.5D Isometric Hologram projection, Side-by-side Dual Comparative Split-Screen, Interactive Manual WASD driving, and a 60 FPS multi-channel telemetry strip chart with millisecond inspection.
 - **Codebase Integrity:** 100 passed, 2 skipped unit and integration tests (`pytest -q`), strict zero-fabrication integrity enforcement (`claims_ledger.md`), pinned scientific dependencies, and clean Git synchronization on GitHub.
 

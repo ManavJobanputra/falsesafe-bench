@@ -285,9 +285,9 @@ def run_pipeline(config_path: Path, max_sizes: int | None = None) -> dict:
                     fsv_k0, fsv_k2, confidence=0.95, n_resamples=10000, seed=20261027
                 )
                 cost_res = compute_asymmetric_safety_cost(fsv_k0, fuv_k0, fsv_k2, fuv_k2)
-                r_est = red["ratio_of_means_reduction_pct"]
-                ci_lo = red["ratio_of_means_ci_lower_pct"]
-                ci_hi = red["ratio_of_means_ci_upper_pct"]
+                r_est = red.mean_reduction_pct
+                ci_lo = red.ci_reduction_pct[0]
+                ci_hi = red.ci_reduction_pct[1]
 
                 decision = (
                     "SUPPORTED"

@@ -349,6 +349,11 @@ def run_pipeline(config_path: Path, max_sizes: int | None = None) -> dict:
     return {"summary_path": str(summary_path), "records": summary_records}
 
 
+def run_sweep(config_path: Path, max_sizes: int | None = None) -> dict:
+    """Public alias for the sweep entry point used by the CLI ``sweep`` command."""
+    return run_pipeline(config_path, max_sizes=max_sizes)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run falsesafe-bench E1/E2 experiment sweep")
     parser.add_argument("--config", type=Path, default=ROOT / "configs" / "e1_di_sweep.yaml")

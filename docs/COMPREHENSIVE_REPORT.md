@@ -32,7 +32,7 @@ graph TD
 ### Key Milestones & Empirical Verification
 - **Verified Empirical Claims:** Multi-seed evaluation ($n=5$) confirms that nominal learned models produce a mean False-Safe Volume of **$0.0030$** (Claim C1). Disturbance inflation with multiplier $k=2.0$ cuts False-Safe Volume by **$72.7\%$** (Claim C2), passing the target benchmark threshold of $\ge 50\%$.
 - **Mission Control Studio v3.0:** Interactive browser cockpit featuring 7 diverse multi-task environments, 2.5D Isometric Hologram projection, Side-by-side Dual Comparative Split-Screen, Interactive Manual WASD driving, and a 60 FPS multi-channel telemetry strip chart with millisecond inspection.
-- **Codebase Integrity:** 19/19 unit and integration tests passing (`pytest -v`), strict zero-fabrication integrity enforcement (`claims_ledger.md`), pinned scientific dependencies, and clean Git synchronization on GitHub.
+- **Codebase Integrity:** 100 passed, 2 skipped unit and integration tests (`pytest -q`), strict zero-fabrication integrity enforcement (`claims_ledger.md`), pinned scientific dependencies, and clean Git synchronization on GitHub.
 
 ---
 
@@ -163,7 +163,7 @@ falsesafe-bench/
 │   ├── models/ensemble.py    # PyTorch ensemble dynamics with checkpoint load/save
 │   ├── envs/arena_env.py     # SafeArenaEnv standardized Gymnasium-compatible RL wrapper
 │   └── systems.py            # Physical dynamics and analytic safe set definitions
-├── tests/                    # Protected pytest test suite (19/19 passing)
+├── tests/                    # Protected pytest test suite (100 passed, 2 skipped)
 ├── claims_ledger.md          # Formal empirical claims repository
 └── requirements.txt          # Pinned scientific library dependencies
 ```

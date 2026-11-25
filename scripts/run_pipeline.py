@@ -34,7 +34,9 @@ from lcert.hj_learned import solve_learned_di_brt
 from lcert.metrics import (
     CertificationMetrics,
     aggregate_metric_runs,
+    compute_asymmetric_safety_cost,
     compute_certification_metrics,
+    compute_paired_bootstrap_reduction,
 )
 from lcert.systems import di_safe_analytic
 from lcert.train import evaluate_dynamics_model, train_dynamics_model

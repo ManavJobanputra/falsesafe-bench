@@ -39,6 +39,16 @@ zero, but smaller than claimed. Source: claim P1 in [`claims_ledger.md`](claims_
 *FSV falls monotonically with k but flattens well above zero; figure regenerated from stored
 results by `scripts/make_figures.py`.*
 
+## What this repo is and is not
+
+**Is:** a research harness for auditing Hamilton-Jacobi-reachability safety certificates under
+learned dynamics — it computes a ground-truth BRT and a learned-model BRT on the same grid and
+measures False-Safe Volume (FSV), False-Unsafe Volume (FUV) and IoU between them.
+
+**Is not:** an LLM evaluation, a safety-certification product, or a finished benchmark. The
+latent world-model path is exploratory and its gates have not passed; the Dubins experiments
+E1–E3 have not been run. Only the double-integrator results in `results/` are reported claims.
+
 ## What This Does
 
 When a robot learns a model of how it moves from data, it can compute a **safe set** — states where it's guaranteed not to crash. But what happens when the learned model is wrong?

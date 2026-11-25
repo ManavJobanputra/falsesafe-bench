@@ -42,3 +42,14 @@ per-state epistemic inflation. `docs/FRAMEWORK.md` already states that framework
 runs are exploratory and must not be quoted as confirmatory results. Never mix
 FSV/FUV numbers across the two stacks.
 
+## 5. Legacy runlogs lack provenance fields
+
+`scripts/validate_runlogs.py` checks every committed `runlog.json` under
+`results/` against the required fields in `runlog_schema.json`. It reports
+**0 conformant of 40 scanned** (40 non-conformant). Across those 40 logs, `seed`
+is the only required field present (missing in 0/40); every other required field
+(`git_commit`, `config_sha256`, `library_versions`, `split_seed`, `status`, and
+the rest) is missing in 40/40. The legacy runlogs therefore cannot prove which
+commit, config, or library versions produced them, and are treated as a frozen
+legacy baseline rather than a reproducible provenance record.
+

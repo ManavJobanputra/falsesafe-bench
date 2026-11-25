@@ -284,7 +284,18 @@ def run_pipeline(config_path: Path, max_sizes: int | None = None) -> dict:
                 red = compute_paired_bootstrap_reduction(
                     fsv_k0, fsv_k2, confidence=0.95, n_resamples=10000, seed=20261027
                 )
-                cost_res = compute_asymmetric_safety_cost(fsv_k0, fuv_k0, fsv_k2, fuv_k2)
+                cost_k0 = float(np.mean(compute_asymmetric_safety_cost(fsv_k0, fuv_k0)))
+                cost_k2 = float(np.mean(compute_asymmetric_safety_cost(fsv_k2, fuv_k2)))
+                delta_fsv = float(np.mean(fsv_k0) - np.mean(fsv_k2))
+                delta_fuv = float(np.mean(fuv_k2) - np.mean(fuv_k0))
+                r_star = float(delta_fuv / delta_fsv) if delta_fsv > 1e-7 else None
+                cost_res = {
+                    "cost_k0": cost_k0,
+                    "cost_k2": cost_k2,
+                    "delta_fsv_mean": delta_fsv,
+                    "delta_fuv_mean": delta_fuv,
+                    "break_even_ratio_r_star": round(r_star, 4) if r_star is not None else None,
+                }
                 r_est = red.mean_reduction_pct
                 ci_lo = red.ci_reduction_pct[0]
                 ci_hi = red.ci_reduction_pct[1]

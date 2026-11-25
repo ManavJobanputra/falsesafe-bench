@@ -50,6 +50,7 @@ def run_single_condition(
     inflation_k_values: list[float],
     output_dir: Path,
     v_true_precomputed: np.ndarray | None = None,
+    border_cells: int = 3,
 ) -> dict[float, CertificationMetrics]:
     """Execute training, reachability solve, and certification for a single seed & condition."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -150,7 +151,7 @@ def run_single_condition(
         cert = compute_certification_metrics(
             v_true=v_true,
             v_hat=v_hat,
-            border_cells=2,
+            border_cells=border_cells,
             states=states,
             coverage_gap=data_config["coverage_gap"],
         )
@@ -216,6 +217,7 @@ def run_pipeline(config_path: Path, max_sizes: int | None = None) -> dict:
         data_sizes = data_sizes[:max_sizes]
     seeds = config.get("seeds", [0, 1, 2, 3, 4])
     inflation_k_values = [float(k) for k in config.get("inflation_k_values", [0.0, 1.0])]
+    border_cells = int(config.get("border_cells", 3))
 
     # Enforce confirmatory guard before touching any confirmatory seed
     check_confirmatory_guard(seeds)
@@ -281,6 +283,7 @@ def run_pipeline(config_path: Path, max_sizes: int | None = None) -> dict:
                     inflation_k_values=inflation_k_values,
                     output_dir=cond_dir,
                     v_true_precomputed=v_true_cached,
+                    border_cells=border_cells,
                 )
                 for k in inflation_k_values:
                     run_metrics_by_k[k].append(m_by_k[k])

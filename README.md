@@ -233,7 +233,9 @@ in the stored S2 output; and framework numbers are not comparable to `results/` 
 
 Every number in this repo is traceable:
 - **No fabricated results.** If a metric isn't computed, it says so.
-- **All runs are logged** with seeds, git commit, configs, and artifact hashes.
+- **New runs must be logged** with seeds, git commit, configs, and artifact hashes, per
+  `runlog_schema.json`. The committed legacy runlogs predate this and do **not** satisfy the schema;
+  `scripts/validate_runlogs.py` reports which fields are missing (see `results/README.md`).
 - **Negative results** are reported with the same prominence as positive ones.
 - **claims_ledger.md** tracks every number that leaves this repo.
 

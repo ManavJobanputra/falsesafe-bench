@@ -229,6 +229,10 @@ grid-cell count, so small disturbance changes can be invisible; the committed re
 (`split_seed=42`), so their CIs understate data-sampling variability; C0 and C2 are bit-identical
 in the stored S2 output; and framework numbers are not comparable to `results/` numbers.
 
+Future work that has not been run is listed in [`docs/ROADMAP.md`](docs/ROADMAP.md), and a
+single-page problem/method/result recap is in
+[`docs/ONE_PAGE_SUMMARY.md`](docs/ONE_PAGE_SUMMARY.md).
+
 ## Integrity
 
 Every number in this repo is traceable:
@@ -272,7 +276,8 @@ Starter tasks are labelled [good first issue](https://github.com/nisaral/falsesa
 
 This repository began as a fork of [nisaral/falsesafe-bench](https://github.com/nisaral/falsesafe-bench)
 (upstream commit `a4fd856`). Changes since then are listed in [CHANGELOG.md](CHANGELOG.md).
-Upstream authorship and the Apache-2.0 license are preserved unchanged.
+Upstream authorship and the Apache-2.0 license are preserved unchanged. Citation metadata for
+this fork is in [`CITATION.cff`](CITATION.cff).
 
 ## Citation
 

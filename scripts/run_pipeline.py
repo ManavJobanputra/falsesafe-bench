@@ -215,8 +215,25 @@ def aggregate_p1(
     return {"reduction": red.to_dict(), "cost": cost, "decision": decision}
 
 
-def run_pipeline(config_path: Path, max_sizes: int | None = None, vary_split_seed: bool = False) -> dict:
-    """Execute full sweep defined in config_path and print aggregated research findings."""
+def _display_path(path: Path) -> str:
+    """Repo-relative path when possible, otherwise the absolute path."""
+    try:
+        return str(Path(path).relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def run_pipeline(
+    config_path: Path,
+    max_sizes: int | None = None,
+    vary_split_seed: bool = False,
+    output_dir: Path | None = None,
+) -> dict:
+    """Execute full sweep defined in config_path and print aggregated research findings.
+
+    ``output_dir`` overrides the default timestamped directory under
+    ``results/sweeps/``; when given, the sweep is written there instead.
+    """
     config = load_config(config_path)
     data_sizes = config.get("data_sizes_trajectories", [10, 30, 100])
     if max_sizes is not None:
@@ -228,13 +245,16 @@ def run_pipeline(config_path: Path, max_sizes: int | None = None, vary_split_see
     # Enforce confirmatory guard before touching any confirmatory seed
     check_confirmatory_guard(seeds)
 
-    results_dir = ROOT / "results" / "sweeps" / datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    if output_dir is not None:
+        results_dir = Path(output_dir)
+    else:
+        results_dir = ROOT / "results" / "sweeps" / datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     results_dir.mkdir(parents=True, exist_ok=True)
 
     print("=" * 70)
     print(f"=== falsesafe-bench: Running {config.get('experiment', 'E1')} Sweep ===")
     print(f"System: {config.get('system')} | Seeds: {seeds} | Sizes: {data_sizes}")
-    print(f"Inflation k: {inflation_k_values} | Output: {results_dir.relative_to(ROOT)}")
+    print(f"Inflation k: {inflation_k_values} | Output: {_display_path(results_dir)}")
     print("=" * 70, flush=True)
 
     gap_conditions = config.get("gap_conditions", [True, False])
@@ -353,7 +373,7 @@ def run_pipeline(config_path: Path, max_sizes: int | None = None, vary_split_see
     summary_path = results_dir / "sweep_summary.json"
     write_json(summary_path, {"config": config, "records": summary_records})
     print("\n" + "=" * 70)
-    print(f"[OK] Sweep complete! Summary written to: {summary_path.relative_to(ROOT)}")
+    print(f"[OK] Sweep complete! Summary written to: {_display_path(summary_path)}")
     print("=" * 70)
 
     return {"summary_path": str(summary_path), "records": summary_records}
@@ -374,10 +394,16 @@ def main() -> int:
         help="derive the data-split seed from each run seed instead of the fixed split_seed "
         "(off by default; legacy behavior is unchanged)",
     )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="write the sweep here instead of a new timestamped dir under results/sweeps/",
+    )
     options = parser.parse_args()
 
     run_pipeline(options.config.resolve(), max_sizes=options.max_sizes,
-                 vary_split_seed=options.vary_split_seed)
+                 vary_split_seed=options.vary_split_seed, output_dir=options.output_dir)
     return 0
 
 

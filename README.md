@@ -57,9 +57,11 @@ The **false-safe volume** is the most dangerous error in safety-critical systems
 - **Double integrator (DI), done as pilot/primary runs:** MLP-ensemble dynamics learned from data with a
   coverage gap, learned-model HJ backward reachable tube (`hj_learned.py`), FSV/FUV metrics with
   bootstrap CIs (`metrics.py`), and six certifiers compared (`certifiers/`). Every number is in
-  [`claims_ledger.md`](claims_ledger.md) with run ids and commits. Headline (claim P1, n=30 seeds):
+  [`claims_ledger.md`](claims_ledger.md) with run ids and commits. Headline (claim P1, n=30 replicates):
   epistemic inflation at k=2 cut false-safe volume by 40.3% [36.5%, 44.7%], which **does not meet**
-  the pre-registered ≥50% bar for H2.
+  the pre-registered ≥50% bar for H2. The n=30 are replicates (initialization/noise/bootstrap seeds);
+  the data split is fixed at `split_seed=42`, so these CIs reflect model and noise variability only
+  and thus understate data-sampling variability.
 - **Dubins car:** ground-truth HJ solver and learned-model code exist; the Dubins experiments (incl. H4) are not run yet.
 - **Simulator demos:** seeded scripted-controller replays only. No RL policy has been trained and
   no learned safety filter drives the browser demos.

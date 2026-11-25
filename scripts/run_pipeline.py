@@ -51,9 +51,16 @@ def run_single_condition(
     output_dir: Path,
     v_true_precomputed: np.ndarray | None = None,
     border_cells: int = 3,
+    vary_split_seed: bool = False,
 ) -> dict[float, CertificationMetrics]:
-    """Execute training, reachability solve, and certification for a single seed & condition."""
+    """Execute training, reachability solve, and certification for a single seed & condition.
+
+    With ``vary_split_seed`` the data-split seed is derived from ``seed`` instead
+    of the fixed ``split_seed``; off by default so legacy behavior is unchanged.
+    """
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    split_seed = seed if vary_split_seed else base_config["split_seed"]
 
     # Prepare data config
     data_config = {
@@ -69,7 +76,7 @@ def run_single_condition(
             "test": base_config["test_trajectories"],
         },
         "derivative_observation_noise_std": base_config["derivative_observation_noise_std"],
-        "split_seed": base_config["split_seed"],
+        "split_seed": split_seed,
         "seed": seed,
         "max_sampling_attempts": 20000,
         "coverage_gap": {
@@ -209,7 +216,7 @@ def aggregate_p1(
     return {"reduction": red.to_dict(), "cost": cost, "decision": decision}
 
 
-def run_pipeline(config_path: Path, max_sizes: int | None = None) -> dict:
+def run_pipeline(config_path: Path, max_sizes: int | None = None, vary_split_seed: bool = False) -> dict:
     """Execute full sweep defined in config_path and print aggregated research findings."""
     config = load_config(config_path)
     data_sizes = config.get("data_sizes_trajectories", [10, 30, 100])
@@ -284,6 +291,7 @@ def run_pipeline(config_path: Path, max_sizes: int | None = None) -> dict:
                     output_dir=cond_dir,
                     v_true_precomputed=v_true_cached,
                     border_cells=border_cells,
+                    vary_split_seed=vary_split_seed,
                 )
                 for k in inflation_k_values:
                     run_metrics_by_k[k].append(m_by_k[k])
@@ -361,9 +369,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Run falsesafe-bench E1/E2 experiment sweep")
     parser.add_argument("--config", type=Path, default=ROOT / "configs" / "e1_di_sweep.yaml")
     parser.add_argument("--max-sizes", type=int, default=None)
+    parser.add_argument(
+        "--vary-split-seed",
+        action="store_true",
+        help="derive the data-split seed from each run seed instead of the fixed split_seed "
+        "(off by default; legacy behavior is unchanged)",
+    )
     options = parser.parse_args()
 
-    run_pipeline(options.config.resolve(), max_sizes=options.max_sizes)
+    run_pipeline(options.config.resolve(), max_sizes=options.max_sizes,
+                 vary_split_seed=options.vary_split_seed)
     return 0
 
 

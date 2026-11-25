@@ -2,6 +2,10 @@
 
 # 🛡️ falsesafe-bench
 
+**False-safe** means a robot's learned dynamics model says a state is recoverable (safe) when,
+under the real physics, it is already too late to avoid a crash — and this benchmark measures how
+large that wrongly-certified region is when dynamics are learned from finite data.
+
 [![Live demo](https://img.shields.io/badge/live%20demo-nisaral.github.io%2Ffalsesafe--bench-2ea44f)](https://nisaral.github.io/falsesafe-bench/) [![3D viewer](https://img.shields.io/badge/3D-viewer-blue)](https://nisaral.github.io/falsesafe-bench/viewer3d/) [![Gym](https://img.shields.io/badge/interactive-gym-orange)](https://nisaral.github.io/falsesafe-bench/gym/)
 
 **New here?** Robots that *learn* their own safety checks can wrongly say "safe" in places they never saw. FalseSafe-Bench measures how often and how badly. Start with the [interactive gym](https://nisaral.github.io/falsesafe-bench/gym/) (guided tour included) or the [plain-language glossary](https://nisaral.github.io/falsesafe-bench/glossary.html).

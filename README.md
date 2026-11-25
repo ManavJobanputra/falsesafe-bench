@@ -137,10 +137,23 @@ falsesafe-bench/
 
 ## Quick Start
 
-### Windows
+```bash
+git clone https://github.com/ManavJobanputra/falsesafe-bench.git && cd falsesafe-bench
+uv venv --python 3.13 && source .venv/bin/activate && uv pip install -r requirements.txt
+python scripts/run_experiment.py doctor
+python -m pytest -q -p no:cacheprovider
+PYTHONPATH=src python -m lcert.framework run configs/framework/di_nominal_sweep.yaml
+```
+
+The last command runs an exploratory framework sweep and writes JSON for the offline 3D viewer
+(`demos/viewer3d/index.html`). It is not the preregistered P1 experiment.
+
+### Platform-specific setup
+
+#### Windows
 
 ```powershell
-git clone https://github.com/nisaral/falsesafe-bench.git
+git clone https://github.com/ManavJobanputra/falsesafe-bench.git
 cd falsesafe-bench
 .\scripts\bootstrap.ps1
 
@@ -155,10 +168,10 @@ cd falsesafe-bench
 .\.venv\Scripts\python.exe scripts/run_experiment.py simulate --config configs/starters/fleet.json
 ```
 
-### Linux / macOS
+#### Linux / macOS
 
 ```bash
-git clone https://github.com/nisaral/falsesafe-bench.git
+git clone https://github.com/ManavJobanputra/falsesafe-bench.git
 cd falsesafe-bench
 
 # Install uv if not present

@@ -266,6 +266,12 @@ Starter tasks are labelled [good first issue](https://github.com/nisaral/falsesa
 - [ ] Interactive Colab notebooks
 - [ ] Documentation site
 
+## Origin and attribution
+
+This repository began as a fork of [nisaral/falsesafe-bench](https://github.com/nisaral/falsesafe-bench)
+(upstream commit `a4fd856`). Changes since then are listed in [CHANGELOG.md](CHANGELOG.md).
+Upstream authorship and the Apache-2.0 license are preserved unchanged.
+
 ## Citation
 
 If you use this work, please cite:

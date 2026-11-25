@@ -32,6 +32,15 @@ class LearnedDoubleIntegratorDynamics(hj.Dynamics):
         aleatoric_bound: float = 0.0,
         control_steps: int = 5,
     ):
+        # The forward pass below (_eval_member) is hardcoded for exactly two
+        # hidden layers, i.e. three linear layers (w[0], w[1], w[2]).
+        for member_index, member_weights in enumerate(ensemble_weights):
+            if len(member_weights) != 3:
+                raise ValueError(
+                    "LearnedDoubleIntegratorDynamics supports exactly 2 hidden layers "
+                    f"(3 linear layers), but ensemble member {member_index} has "
+                    f"{len(member_weights)} linear layers."
+                )
         controls = tuple(float(u) for u in np.linspace(-umax, umax, control_steps))
         super().__init__(
             control_mode="max",

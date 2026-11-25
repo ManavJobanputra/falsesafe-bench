@@ -179,8 +179,9 @@ falsesafe-bench/
 
 | Claim ID | Verified Statement | Mean & 95% Confidence Interval | Seeds ($n$) | Run ID | Commit |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **C1** | Nominal learned model produces non-zero False-Safe Volume in coverage gap ($N=100$) | $\text{FSV} = \mathbf{0.0030} \; [0.0005, 0.0055]$ | $n=5$ | `20261027_161358` | `b77b20e` |
-| **C2** | Epistemic inflation ($k=2.0$) cuts mean False-Safe Volume by **$72.7\%$** (passes $\ge 50\%$ bar) | $\text{FSV} = \mathbf{0.0008} \; [-0.0003, 0.0020]$ | $n=5$ | `20261027_161358` | `b77b20e` |
+| **P1** | Ratio-of-means FSV reduction, $k=2.0$ vs $k=0.0$, hidden-physics gap (confirmatory; canary for H2) | $\mathbf{40.34\%} \; [36.47\%, 44.73\%]$ (nominal FSV 0.0096 -> 0.0057; $\ge 50\%$ bar **not met**) | $n=30$ | `20261027_184119` | `7a5b824` |
+| **C1** | Nominal learned model produces non-zero False-Safe Volume in coverage gap ($N=100$) | $\text{FSV} = \mathbf{0.0030} \; [0.0005, 0.0055]$ | $n=5$ (pilot, superseded by P1) | `20261027_161358` | `b77b20e` |
+| **C2** | Epistemic inflation ($k=2.0$) cuts mean False-Safe Volume by **$72.7\%$** (pilot; superseded, exceeded by confirmatory P1) | $\text{FSV} = \mathbf{0.0008} \; [-0.0003, 0.0020]$ | $n=5$ (pilot, superseded) | `20261027_161358` | `b77b20e` |
 | **C3** | Epistemic inflation induces conservatism cost (False-Unsafe Volume scales from $0.0005$ to $0.0042$) | $\text{FUV} = \mathbf{0.0042} \; [0.0006, 0.0078]$ | $n=5$ | `20261027_161358` | `b77b20e` |
 
 ---

@@ -63,3 +63,19 @@ Each entry is one commit, generated from `git log --oneline` on
 - `docs(readme)`: problem statement, headline result with figure, "what this
   repo is and is not", five-command quick start, repo map, limitations, and
   origin/attribution sections.
+
+## Phase 4 — Follow-up hardening
+
+- `docs(report)`: replace the last "reproducible commit hashes" claim with the
+  legacy-runlog wording.
+- `docs(start-here)`: scope the provenance paragraph to new runs and note that
+  the committed legacy runlogs do not satisfy it.
+- `docs(known-issues)`: add the legacy-runlog provenance gap.
+- `test(data)`: prove `split_seed` alone determines the training arrays.
+- `fix(hj-learned)`: raise a clear `ValueError` when an ensemble is not exactly
+  two hidden layers (the evaluator hardcodes that depth).
+- `feat(pipeline)`: add `--output-dir` / `output_dir=` so sweeps can be written
+  outside `results/`; default behaviour unchanged.
+- `docs(known-issues)`: document the layer assumption and the output location.
+- `docs(readme)`: link the roadmap, one-page summary, and citation; correct the
+  `results/` provenance label in the repo tree.
